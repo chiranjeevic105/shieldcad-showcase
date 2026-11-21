@@ -1,0 +1,7 @@
+# TLS reverse proxy (UNTESTED here). Replace the hostname. For internal CAs use `tls internal` or your own certs.
+shieldcad.example.internal {
+    tls internal
+    encode gzip
+    reverse_proxy shieldcad:8000
+    header Strict-Transport-Security "max-age=31536000"
+}

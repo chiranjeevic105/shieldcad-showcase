@@ -1,0 +1,15 @@
+[project]
+name = "shieldcad"
+version = "0.1.0"
+description = "On-prem prompt-to-parametric-CAD assistant (draft; requires engineering review)"
+requires-python = ">=3.10"
+dependencies = ["cadquery>=2.4"]
+[project.optional-dependencies]
+server = ["fastapi>=0.110", "uvicorn>=0.27"]
+dev = ["pytest", "httpx", "fastapi>=0.110", "uvicorn>=0.27"]
+[project.scripts]
+shieldcad = "shieldcad.cli:main"
+shieldcad-admin = "shieldcad.admin:main"
+shieldcad-server = "shieldcad.server:main"
+[tool.setuptools]
+packages = ["shieldcad"]

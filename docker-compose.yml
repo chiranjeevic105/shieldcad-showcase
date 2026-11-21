@@ -1,0 +1,23 @@
+# First user:  docker compose run --rm shieldcad python -m shieldcad.admin add-user alice admin
+services:
+  shieldcad:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]      # use the tls profile (deploy/Caddyfile) for real deployments
+    volumes: ["shieldcad-data:/data"]
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 4g
+    pids_limit: 256
+    restart: unless-stopped
+    # Air-gapped sites: block all outbound traffic from this container at the host firewall.
+  caddy:                       # optional TLS front end: docker compose --profile tls up
+    image: caddy:2
+    profiles: ["tls"]
+    ports: ["443:443"]
+    volumes: ["./deploy/Caddyfile:/etc/caddy/Caddyfile:ro", "caddy-data:/data"]
+    depends_on: [shieldcad]
+volumes:
+  shieldcad-data:
+  caddy-data:

@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>ShieldCAD</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="style.css"></head><body>
+<header class="top"><div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M4 9l10-5 10 5v10l-10 5-10-5z" stroke="var(--olive)" stroke-width="2" stroke-linejoin="round"/><circle cx="14" cy="14" r="3.2" stroke="var(--blue)" stroke-width="2"/></svg><b>ShieldCAD</b><span>Prompt to CAD, on your own network</span></div><div class="who" id="who"></div></header>
+<div id="login" class="login"><h1>Sign in</h1><p class="mut">Use the API key issued by your administrator.</p><input id="key" type="password" placeholder="API key" autocomplete="off" aria-label="API key"><button id="signin" class="btn">Sign in</button><div id="lerr" class="bad"></div></div>
+<main id="app" hidden>
+<aside>
+<ol class="steps">
+<li class="step active" id="s1"><div class="mark">1</div><div class="body"><h2>Describe</h2>
+<div class="seg"><label><input type="radio" name="mode" value="part" checked><span>Single part</span></label><label><input type="radio" name="mode" value="asm"><span>Assembly</span></label></div>
+<textarea id="q" aria-label="Part description"></textarea>
+<p id="asmopt" class="mut" hidden>One component per line. Placement: <i>on top of part 1</i>, <i>beside part 2</i>, <i>gap 2 mm</i>, <i>x=10 y=0 z=5</i>, <i>rotate 90 about x</i>.<br><label><input type="checkbox" id="fuse" checked> Fuse into one solid</label></p>
+<button id="interp" class="btn">Interpret</button></div></li>
+<li class="step" id="s2"><div class="mark">2</div><div class="body"><h2>Confirm</h2>
+<div id="spec" class="spec mut">Interpret a description to see exactly what ShieldCAD understood before anything is built.</div><div id="errs"></div>
+<button id="gen" class="btn" disabled>Confirm and generate</button></div></li>
+</ol>
+<p class="draft">Draft output. A qualified engineer must review and approve generated geometry before use.</p>
+</aside>
+<section class="stage">
+<div class="sheet" id="view"><canvas id="cv"></canvas><div id="hint">Drag to rotate · scroll to zoom</div>
+<div class="tb"><div class="wide"><small>Part</small><span id="tbPart">–</span></div><div><small>Revision</small><span id="tbRev">–</span></div><div><small>Mass</small><span id="tbMass">–</span></div><div><small>Status</small><span id="tbStatus">–</span></div><div><small>Run</small><span id="tbRun">–</span></div></div></div>
+<div class="tabs" role="tablist"><button class="tab" role="tab" data-t="chk" aria-selected="true">Checks <em id="bdgChk" class="badge"></em></button><button class="tab" role="tab" data-t="dl" aria-selected="false">Downloads</button><button class="tab" role="tab" data-t="par" aria-selected="false">Edit parameters</button><button class="tab" role="tab" data-t="hist" aria-selected="false">History</button></div>
+<div class="panel" id="p-chk"><div id="chk" class="mut">Generate a part to see every check measured on the finished geometry.</div></div>
+<div class="panel" id="p-dl" hidden><div id="dl" class="mut">Downloads appear here once a part is generated.</div>
+<p class="guide"><b>STEP and IGES</b> open in SolidWorks, Fusion, Inventor, CATIA, NX, FreeCAD and Onshape as editable solid geometry. They do not carry the parametric history; <b>part.py</b> is the parametric source. <b>STL and 3MF</b> are for 3D printing, <b>OBJ and GLB</b> for Blender, web and AR.</p></div>
+<div class="panel" id="p-par" hidden><div id="par" class="mut">Generate a part, then change any number to create a linked revision.</div><button id="rev" class="btn slim" disabled>Regenerate as new revision</button><div id="rerr"></div></div>
+<div class="panel" id="p-hist" hidden><div id="hist" class="mut">–</div><button id="ver" class="btn ghost slim" hidden>Verify audit chain</button> <span id="verout" class="mut"></span></div>
+</section></main>
+<script src="vendor/three.min.js"></script><script src="app.js"></script></body></html>
